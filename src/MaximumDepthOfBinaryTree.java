@@ -1,4 +1,8 @@
 import org.w3c.dom.Node;
+
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 public class MaximumDepthOfBinaryTree {
     class TreeNode {
         int val;
@@ -19,13 +23,30 @@ public class MaximumDepthOfBinaryTree {
         }
     }
 
-    public int maxDepth(TreeNode root) {
-        if (root == null) {
+    public int maxDepth(TreeNode root){
+        if(root == null){
             return 0;
-
-        } else {
-            return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
         }
+
+        Deque<TreeNode> dq = new ArrayDeque<>();
+        int depth = 0, next = 0;
+        TreeNode curr;
+        dq.offer(root);
+
+        while(!dq.isEmpty()){
+            depth++;
+            next = dq.size();
+            for(int i = 0 ; i < next ; ++i){
+                curr = dq.poll();
+                if(curr.left != null) {
+                    dq.offer(curr.left);
+                }
+                if(curr.right != null){
+                    dq.offer(curr.right);
+                }
+            }
+        }
+        return depth;
     }
 
     public TreeNode initTree() {
